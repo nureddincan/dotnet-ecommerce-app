@@ -7,19 +7,18 @@ namespace dotnet_store.Controllers;
 public class RoleController : Controller
 {
 
-    private RoleManager<AppRole> _roleManagar;
+    private RoleManager<AppRole> _roleManager;
 
     public RoleController(RoleManager<AppRole> roleManager)
     {
-        _roleManagar = roleManager;
+        _roleManager = roleManager;
     }
     public ActionResult Index()
     {
-        return View(_roleManagar.Roles);
+        return View(_roleManager.Roles);
     }
 
     [HttpGet]
-
     public ActionResult Create()
     {
         return View();
@@ -31,7 +30,7 @@ public class RoleController : Controller
         if (ModelState.IsValid)
         {
             var role = new AppRole { Name = model.RoleAdi };
-            var result = await _roleManagar.CreateAsync(role);
+            var result = await _roleManager.CreateAsync(role);
 
             if (result.Succeeded)
             {
@@ -41,6 +40,50 @@ public class RoleController : Controller
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
+            }
+        }
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Edit(string id)
+    {
+        var role = await _roleManager.FindByIdAsync(id);
+
+        if (role != null)
+        {
+            return View(new RoleEditModel { Id = role.Id, RoleAdi = role.Name! });
+        }
+        {
+            @TempData["Mesaj"] = "Düzenlemek istediğiniz rol bulunamadı.";
+
+            return RedirectToAction("Index");
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Edit(string id, RoleEditModel model)
+    {
+        if (ModelState.IsValid && id == model.Id.ToString())
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+
+            if (role != null)
+            {
+                role.Name = model.RoleAdi;
+
+                var result = await _roleManager.UpdateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    @TempData["Mesaj"] = $"{model.RoleAdi} adlı rol {role.Name} olarak güncellendi.";
+
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
             }
         }
         return View(model);
