@@ -195,4 +195,35 @@ public class AccountController : Controller
 
         return View(model);
     }
+
+    [HttpGet]
+    public ActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> ForgotPassword(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            TempData["Mesaj"] = "E-Posta adresinizi giriniz.";
+            return View();
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+        {
+            TempData["Mesaj"] = "Bu E-Posta adresine kayıtlı hesap yok.";
+            return View();
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var url = Url.Action("ResetPassword", "Account", new { userId = user.Id, token });
+        TempData["Mesaj"] = "E-Posta adresinize gönderilen bağlantıyla şifrenizi sıfırlayabilirsiniz.";
+
+        return RedirectToAction("Login");
+    }
 }
