@@ -1,6 +1,7 @@
 using dotnet_store.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace dotnet_store.Controllers;
 
@@ -8,10 +9,12 @@ public class RoleController : Controller
 {
 
     private RoleManager<AppRole> _roleManager;
+    private UserManager<AppUser> _userManager;
 
-    public RoleController(RoleManager<AppRole> roleManager)
+    public RoleController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
     {
         _roleManager = roleManager;
+        _userManager = userManager;
     }
     public ActionResult Index()
     {
@@ -88,5 +91,51 @@ public class RoleController : Controller
         }
         return View(model);
     }
-}
 
+    [HttpGet]
+    public async Task<ActionResult> Delete(string? id)
+    {
+        if (id == null)
+        {
+            return RedirectToAction("index");
+        }
+
+        var role = await _roleManager.FindByIdAsync(id);
+
+        if (role != null)
+        {
+            ViewBag.Users = await _userManager.GetUsersInRoleAsync(role.Name!);
+            return View(role);
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> DeleteConfirm(string? id)
+    {
+        if (id == null)
+        {
+            return RedirectToAction("index");
+        }
+
+        var roleDel = await _roleManager.FindByIdAsync(id);
+
+        if (roleDel != null)
+        {
+            var result = await _roleManager.DeleteAsync(roleDel);
+
+            if (result.Succeeded)
+            {
+                @TempData["Mesaj"] = $"{roleDel.Name} adlı rol silindi.";
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        return RedirectToAction("index");
+    }
+}

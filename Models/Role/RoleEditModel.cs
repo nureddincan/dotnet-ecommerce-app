@@ -12,6 +12,3 @@ public class RoleEditModel
     public string RoleAdi { get; set; } = null!;
 
 }
-
-
-
