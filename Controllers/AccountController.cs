@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using dotnet_store.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace dotnet_store.Controllers;
 
@@ -107,19 +109,58 @@ public class AccountController : Controller
         return View();
     }
 
-
     public ActionResult AccessDenied()
     {
         return View();
     }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult> EditUser()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId!);
+
+        if (user == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        return View(new AccountEditUserModel
+        {
+            AdSoyad = user!.AdSoyad,
+            Email = user.Email!
+        });
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<ActionResult> EditUser(AccountEditUserModel model)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId!);
+
+        if (ModelState.IsValid)
+        {
+            if (user != null)
+            {
+                user.Email = model.Email;
+                user.AdSoyad = model.AdSoyad;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["Mesaj"] = "Bilgileriniz güncellendi.";
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+        }
+
+        return View(model);
+    }
 }
-
-
-// [Authorize] sınıf üstüne yazılırsa tüm controller için geçerli olur.
-// Eğer sadece belirli aksiyonları yetkilendirmek istiyorsak aksiyon üstüne yazarız.
-
-// [AllowAnonymous] ile yetkilendirme iptal edilir. Sınıf veya aksiyon bazında kullanılabilir.
-// Eğer bir aksiyon hem [Authorize] hem de [AllowAnonymous] içeriyorsa
-// [AllowAnonymous] geçerli olur.
-// [Authorize(Roles = "Admin")] ile sadece admin yetkilendirilir
-
