@@ -15,10 +15,10 @@ public class UserEditModel
 
     [Display(Name = "Parola")]
     [DataType(DataType.Password)]
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; } = null!;
 
     [Display(Name = "Tekrar Parola")]
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Parola eşleşmiyor.")]
-    public string PasswordConfirm { get; set; } = null!;
+    public string? PasswordConfirm { get; set; } = null!;
 }

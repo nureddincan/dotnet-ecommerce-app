@@ -14,7 +14,6 @@ public class UserController : Controller
         _userManager = userManager;
         _roleManager = roleManager;
     }
-
     public ActionResult Index()
     {
         return View(_userManager.Users);
@@ -64,6 +63,7 @@ public class UserController : Controller
         {
             return RedirectToAction("Index");
         }
+
         ViewBag.Roles = await _roleManager.Roles.ToListAsync();
 
         return View(
@@ -76,9 +76,39 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public ActionResult Edit(string id, UserEditModel model)
+    public async Task<ActionResult> Edit(string id, UserEditModel model)
     {
-        return View();
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                user.Email = model.Email;
+                user.AdSoyad = model.AdSoyad;
+            }
+
+            var result = await _userManager.UpdateAsync(user!);
+
+            if (result.Succeeded && !string.IsNullOrEmpty(model.Password))
+            {
+                // Gelen kullanıcının parolası varsa ya da yoksa her türlü siler
+                await _userManager.RemovePasswordAsync(user!);
+                // Parolası yoksa parolayı günceller
+                await _userManager.AddPasswordAsync(user!, model.Password);
+            }
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        return View(model);
     }
 }
-
