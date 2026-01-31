@@ -1,6 +1,7 @@
 using dotnet_store.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_store.Controllers;
 
@@ -52,6 +53,32 @@ public class UserController : Controller
 
         }
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Edit(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user == null)
+        {
+            return RedirectToAction("Index");
+        }
+        ViewBag.Roles = await _roleManager.Roles.ToListAsync();
+
+        return View(
+            new UserEditModel
+            {
+                AdSoyad = user.AdSoyad,
+                Email = user.Email!,
+            }
+        );
+    }
+
+    [HttpPost]
+    public ActionResult Edit(string id, UserEditModel model)
+    {
+        return View();
     }
 }
 

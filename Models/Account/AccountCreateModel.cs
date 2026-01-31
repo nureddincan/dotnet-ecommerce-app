@@ -15,12 +15,12 @@ public class AccountCreateModel
     public string Email { get; set; } = null!;
 
 
-    [Display(Name = "Şifre")]
+    [Display(Name = "Parola")]
     [Required(ErrorMessage = "{0} zorunludur.")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
 
-    [Display(Name = "Tekrar Şifre")]
+    [Display(Name = "Tekrar Parola")]
     [Required(ErrorMessage = "{0} alanı zorunludur.")]
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Parola eşleşmiyor.")]

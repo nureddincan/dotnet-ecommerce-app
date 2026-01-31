@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace dotnet_store.Models;
 
-public class UserCreateModel
+public class UserEditModel
 {
     [Display(Name = "Ad Soyad")]
     [Required(ErrorMessage = "{0} zorunludur.")]
@@ -12,4 +12,13 @@ public class UserCreateModel
     [Required(ErrorMessage = "{0} zorunludur.")]
     [EmailAddress]
     public string Email { get; set; } = null!;
+
+    [Display(Name = "Parola")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; } = null!;
+
+    [Display(Name = "Tekrar Parola")]
+    [DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = "Parola eşleşmiyor.")]
+    public string PasswordConfirm { get; set; } = null!;
 }
