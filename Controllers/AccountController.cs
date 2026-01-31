@@ -8,7 +8,6 @@ namespace dotnet_store.Controllers;
 public class AccountController : Controller
 {
     private UserManager<AppUser> _userManager;
-
     private SignInManager<AppUser> _signInManager;
     public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
@@ -47,7 +46,6 @@ public class AccountController : Controller
     [HttpGet]
     public ActionResult Login()
     {
-
         return View();
     }
 
