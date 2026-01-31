@@ -163,4 +163,36 @@ public class AccountController : Controller
 
         return View(model);
     }
+
+    [Authorize]
+    [HttpGet]
+    public ActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<ActionResult> ChangePassword(AccountChangePasswordModel model)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId!);
+
+        if (user != null)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
+
+            if (result.Succeeded)
+            {
+                TempData["Mesaj"] = "Parolanız güncellendi.";
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        return View(model);
+    }
 }
