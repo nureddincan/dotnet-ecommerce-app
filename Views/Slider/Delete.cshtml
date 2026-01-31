@@ -1,0 +1,20 @@
+@{
+    Layout = "_AdminLayout";
+}
+@model Slider
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <img src="~/img/@Model.Resim" class="card-img-top" alt="@Model.Baslik">
+            <div class="card-body text-center">
+                <p>"@Model.Baslik" isimli sliderı silmek istediğinize emin misiniz?</p>
+                <form method="post" asp-controller="Slider" asp-action="DeleteConfirm" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                    <a asp-controller="Slider" asp-action="Index" class="btn btn-primary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

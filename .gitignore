@@ -1,0 +1,20 @@
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio & VS Code directories
+.vs/
+.vscode/
+*.user
+
+# SQLite Database Files
+*.db
+*.db-shm
+*.db-wal
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

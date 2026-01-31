@@ -1,0 +1,8 @@
+@model List<Kategori>
+
+<nav class="nav nav-pills flex-column flex-nowrap overflow-auto slider_nav">
+    @foreach (Kategori kategori in Model)
+    {
+        <a href="/urunler/@kategori.Url" class="nav-link">@kategori.Ad</a>
+    }
+</nav>

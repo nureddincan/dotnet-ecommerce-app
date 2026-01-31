@@ -1,0 +1,19 @@
+@{
+    Layout = "_AdminLayout";
+}
+@model Urun
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body  text-center">
+                <p>"@Model.Ad" adlı ürünü silmek istediğinize emin misiniz?</p>
+                <form method="post" asp-controller="Urun" asp-action="DeleteConfirm">
+                    <input type="hidden" asp-for="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                    <a asp-controller="Urun" asp-action="Index" class="btn btn-primary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
