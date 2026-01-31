@@ -21,4 +21,7 @@ public class UserEditModel
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Parola eşleşmiyor.")]
     public string? PasswordConfirm { get; set; } = null!;
+
+    public IList<string>? SelectedRoles { get; set; }
 }
+

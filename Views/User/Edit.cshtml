@@ -52,11 +52,12 @@
                             <h6 class="card-title mb-0">Roller</h6>
                         </div>
                         <div class="card-body">
-                            @foreach (AppRole role in ViewBag.Roles)
+                            @foreach (var item in ViewBag.Roles)
                             {
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="" id="@role.Id"></input>
-                                    <label for="@role" class="form-check-label">@role.Name</label>
+                                    <input type="checkbox" class="form-check-input" name="SelectedRoles" id="@item"
+                                        value="@item" @(Model.SelectedRoles!.Any(role => role == item) ? "checked" : "")>
+                                    <label for="@item" class="form-check-label">@item</label>
                                 </div>
                             }
                         </div>

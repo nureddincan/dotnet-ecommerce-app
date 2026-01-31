@@ -64,13 +64,14 @@ public class UserController : Controller
             return RedirectToAction("Index");
         }
 
-        ViewBag.Roles = await _roleManager.Roles.ToListAsync();
+        ViewBag.Roles = await _roleManager.Roles.Select(i => i.Name).ToListAsync();
 
         return View(
             new UserEditModel
             {
                 AdSoyad = user.AdSoyad,
                 Email = user.Email!,
+                SelectedRoles = await _userManager.GetRolesAsync(user),
             }
         );
     }
@@ -100,6 +101,11 @@ public class UserController : Controller
 
             if (result.Succeeded)
             {
+                if (model.SelectedRoles != null)
+                {
+                    await _userManager.RemoveFromRolesAsync(user!, await _userManager.GetRolesAsync(user!));
+                    await _userManager.AddToRolesAsync(user!, model.SelectedRoles);
+                }
                 return RedirectToAction("Index");
             }
 
