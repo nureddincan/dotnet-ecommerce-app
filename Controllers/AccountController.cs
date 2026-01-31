@@ -42,7 +42,6 @@ public class AccountController : Controller
         return View(model);
     }
 
-
     [HttpGet]
     public ActionResult Login()
     {
@@ -94,6 +93,7 @@ public class AccountController : Controller
         return View(model);
     }
 
+    [Authorize]
     public async Task<ActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
@@ -106,4 +106,20 @@ public class AccountController : Controller
     {
         return View();
     }
+
+
+    public ActionResult AccessDenied()
+    {
+        return View();
+    }
 }
+
+
+// [Authorize] sınıf üstüne yazılırsa tüm controller için geçerli olur.
+// Eğer sadece belirli aksiyonları yetkilendirmek istiyorsak aksiyon üstüne yazarız.
+
+// [AllowAnonymous] ile yetkilendirme iptal edilir. Sınıf veya aksiyon bazında kullanılabilir.
+// Eğer bir aksiyon hem [Authorize] hem de [AllowAnonymous] içeriyorsa
+// [AllowAnonymous] geçerli olur.
+// [Authorize(Roles = "Admin")] ile sadece admin yetkilendirilir
+

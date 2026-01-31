@@ -1,13 +1,14 @@
 using dotnet_store.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace dotnet_store.Controllers;
 
+
+[Authorize(Roles = "Admin")]
 public class RoleController : Controller
 {
-
     private RoleManager<AppRole> _roleManager;
     private UserManager<AppUser> _userManager;
 

@@ -1,8 +1,10 @@
 using dotnet_store.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_store.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class KategoriController : Controller
 {
     private readonly DataContext _context;
@@ -33,7 +35,7 @@ public class KategoriController : Controller
     [HttpPost]
     public ActionResult Create(KategoriCreateModel model)
     {
-        if (ModelState.IsValid) 
+        if (ModelState.IsValid)
         {
             Kategori yeniKategori = new Kategori
             {
@@ -129,5 +131,3 @@ public class KategoriController : Controller
         return RedirectToAction("index");
     }
 }
-
-

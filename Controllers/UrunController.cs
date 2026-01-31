@@ -1,9 +1,11 @@
 using dotnet_store.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dotnet_store.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class UrunController : Controller
 {
     private readonly DataContext _context;
@@ -38,6 +40,7 @@ public class UrunController : Controller
         return View(urunler);
     }
 
+    [AllowAnonymous]
     public ActionResult List(string url, string q)
     {
         var query = _context.Urunler.Where(i => i.AktifMi); // Queryable
@@ -53,6 +56,8 @@ public class UrunController : Controller
         }
         return View(query.ToList());
     }
+
+    [AllowAnonymous]
     public ActionResult Details(int id)
     {
         Urun? urun = _context.Urunler.Find(id);
@@ -178,6 +183,7 @@ public class UrunController : Controller
         return View(model);
     }
 
+    [HttpGet]
     public ActionResult Delete(int? id)
     {
         if (id == null)

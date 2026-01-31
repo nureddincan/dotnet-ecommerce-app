@@ -1,0 +1,18 @@
+@section Bar {
+    <section class="bg-primary p-3">
+        <div class="container">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">Yetkisiz Erişim!</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+}
+
+<section>
+    <div class="container my-3">
+        <div class="alert alert-danger text-center">Yetki gerektiren bir kaynağa erişmeye çalıştınız!</div>
+    </div>
+</section>
