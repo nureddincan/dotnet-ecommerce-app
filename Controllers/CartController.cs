@@ -46,7 +46,7 @@ public class CartController : Controller
 
         await _context.SaveChangesAsync();
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Cart");
     }
 
     private async Task<Cart> GetCartAsync()
@@ -62,8 +62,8 @@ public class CartController : Controller
         if (cart == null)
         {
             cart = new Cart { CustomerId = customerId! };
-            _context.Carts.Add(cart);
-            await _context.SaveChangesAsync();
+            _context.Carts.Add(cart);           // change tracking
+            await _context.SaveChangesAsync();  // 
         }
 
         return cart;
