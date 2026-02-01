@@ -1,5 +1,3 @@
-@using Microsoft.AspNetCore.Http.Features
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model Cart
 
 @section Bar {
@@ -29,31 +27,37 @@
                 <div class="col-lg-7">
                     @* <div class="alert alert-warning p-2">Ücretsiz Kargo</div> *@
                     <ul class="list-group">
-                        @foreach (var item in Model.CartItems)
+                        @foreach (var cartItem in Model.CartItems)
                         {
 
                             <li class="py-3 mb-2 border-top list-group-item">
                                 <div class="row align-items-center">
-                                    <div class="col-8">
+                                    <div class="col-7">
                                         <div class="d-flex align-items-center">
-                                            <img src="~/img/@item.Urun.Resim" style="width: 100px;" alt="">
+                                            <img src="~/img/@cartItem.Urun.Resim" style="width: 100px;" alt="">
                                             <div class="ms-3">
-                                                <a asp-controller="Urun" asp-action="Details" asp-route-id="@item.UrunId"
+                                                <a asp-controller="Urun" asp-action="Details" asp-route-id="@cartItem.UrunId"
                                                     class="text-decoration-none text-black">
-                                                    <h6 class="mb-0">@item.Urun.Ad</h6>
-                                                </a>
-                                                <a asp-controller="" asp-action="" class="btn  btn-sm mt-4">
-                                                    <i class="fa-solid fa-trash-can"></i> Sil
+                                                    <h6 class="mb-0">@cartItem.Urun.Ad</h6>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-2">
-                                        <input type="number" value="@item.Miktar" class="form-control fw-bold text-primary"
+                                        <input type="number" value="@cartItem.Miktar" class="form-control fw-bold text-primary"
                                             min="1">
                                     </div>
                                     <div class="col-2 text-center text-primary">
-                                        <span class="fw-bold">@(item.Urun.Fiyat* item.Miktar) TL</span>
+                                        <span class="fw-bold">@(cartItem.Urun.Fiyat* cartItem.Miktar) TL</span>
+                                    </div>
+                                    <div class="col-1">
+                                        <form asp-controller="Cart" asp-action="RemoveItem" method="post">
+                                            <input type="hidden" name="cartItemId" value="@cartItem.Id">
+                                            <button type="submit" class="btn btn-sm d-flex align-items-center">
+                                                <i class="fa-solid fa-trash-can "></i>
+                                                <span>Sil</span>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </li>

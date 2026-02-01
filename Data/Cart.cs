@@ -15,7 +15,6 @@ public class Cart
     {
         return AraToplam() * 0.2;
     }
-
     public double Toplam()
     {
         return ToplamVergi() + AraToplam();
