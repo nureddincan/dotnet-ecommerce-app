@@ -2,6 +2,7 @@ using dotnet_store.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_store.Controllers;
@@ -16,8 +17,15 @@ public class UserController : Controller
         _userManager = userManager;
         _roleManager = roleManager;
     }
-    public ActionResult Index()
+    public async Task<ActionResult> Index(string role)
     {
+        ViewBag.Roller = new SelectList(_roleManager.Roles, "Name", "Name", role);
+
+        if (!string.IsNullOrEmpty(role))
+        {
+            return View(await _userManager.GetUsersInRoleAsync(role));
+        }
+
         return View(_userManager.Users);
     }
 
@@ -118,5 +126,40 @@ public class UserController : Controller
         }
 
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Delete(string? id)
+    {
+        if (id != null)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                return View(user);
+            }
+        }
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> DeleteConfirm(string? id)
+    {
+        if (id != null)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    TempData["Mesaj"] = $"{user.AdSoyad} adlı kullanıcı silindi.";
+                }
+            }
+        }
+        return RedirectToAction("Index");
     }
 }
