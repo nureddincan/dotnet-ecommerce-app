@@ -11,6 +11,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int>
     public DbSet<Urun> Urunler { get; set; }
     public DbSet<Kategori> Kategoriler { get; set; }
     public DbSet<Slider> Sliderlar { get; set; }
+    public DbSet<Cart> Carts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -94,4 +95,3 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int>
         );
     }
 }
-

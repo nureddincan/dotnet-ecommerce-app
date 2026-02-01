@@ -7,4 +7,3 @@ public class Kategori
     public string Url { get; set; } = null!;
     public List<Urun> Uruns { get; set; } = new(); // navigation property
 }
-
