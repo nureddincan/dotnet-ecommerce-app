@@ -1,6 +1,5 @@
 using dotnet_store.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,21 +15,17 @@ public class CartController : Controller
         _context = context;
     }
 
+    public async Task<ActionResult> Index()
+    {
+        var cart = await GetCartAsync();
+
+        return View(cart);
+    }
+
     [HttpPost]
     public async Task<ActionResult> AddtoCart(int urunId, int miktar = 1)
     {
-        var customerId = User.Identity?.Name;
-
-        var cart = await _context.Carts
-                    .Include(cart => cart.CartItems)
-                    .Where(cart => cart.CustomerId == customerId)
-                    .FirstOrDefaultAsync();
-
-        if (cart == null)
-        {
-            cart = new Cart { CustomerId = customerId! };
-            _context.Carts.Add(cart);
-        }
+        var cart = await GetCartAsync();
 
         var addedItem = cart.CartItems.Where(i => i.UrunId == urunId).FirstOrDefault();
 
@@ -52,5 +47,25 @@ public class CartController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index", "Home");
+    }
+
+    private async Task<Cart> GetCartAsync()
+    {
+        var customerId = User.Identity?.Name;
+        // 2.Seviye Nagivation Property
+        var cart = await _context.Carts
+                    .Include(cart => cart.CartItems)
+                    .ThenInclude(cartItem => cartItem.Urun)
+                    .Where(cart => cart.CustomerId == customerId)
+                    .FirstOrDefaultAsync();
+
+        if (cart == null)
+        {
+            cart = new Cart { CustomerId = customerId! };
+            _context.Carts.Add(cart);
+            await _context.SaveChangesAsync();
+        }
+
+        return cart;
     }
 }
