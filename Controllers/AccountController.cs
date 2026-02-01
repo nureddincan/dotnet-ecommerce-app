@@ -3,7 +3,6 @@ using dotnet_store.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace dotnet_store.Controllers;
 
@@ -11,10 +10,12 @@ public class AccountController : Controller
 {
     private UserManager<AppUser> _userManager;
     private SignInManager<AppUser> _signInManager;
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+    private IEmailService _emailService;
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _emailService = emailService;
     }
 
     [HttpGet]
@@ -59,7 +60,6 @@ public class AccountController : Controller
 
             if (user != null)
             {
-                // Tarayıcıda cookie varsa bunu ilk başta silelim
                 await _signInManager.SignOutAsync();
 
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.BeniHatirla, true);
@@ -222,12 +222,15 @@ public class AccountController : Controller
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
         var url = Url.Action("ResetPassword", "Account", new { userId = user.Id, token });
-        // eposta gönder
+
+        // E-Posta gönderme
+        var link = $"<a href='http://localhost:5054{url}'>Şifre Yenile</>";
+        await _emailService.SendEmailAsync(user.Email!, "Parola Sıfırlama", link);
+
         TempData["Mesaj"] = "E-Posta adresinize gönderilen bağlantı ile şifrenizi sıfırlayabilirsiniz.";
 
         return RedirectToAction("Login");
     }
-
 
     [HttpGet]
     public async Task<ActionResult> ResetPassword(string userId, string token)
