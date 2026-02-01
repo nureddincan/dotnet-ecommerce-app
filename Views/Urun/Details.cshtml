@@ -51,7 +51,8 @@
                     <div class="product-description mb-3">
                         @Model.Aciklama
                     </div>
-                    <dl class="row broder-bottom">
+                    @* 
+                    <dl class="row border-bottom">
                         <dt class="col-3">Renk</dt>
                         <dd class="col-9">Yıldız Işığı</dd>
                         <dt class="col-3">Bağlantı Özellikleri</dt>
@@ -66,10 +67,18 @@
                                 <option value="45">45mm</option>
                             </select>
                         </div>
-                    </div>
+                    </div> 
+                    *@
                     <div class="buttons">
-                        <a href="" class="btn btn-warning"><i class="fa fa-shopping-basket me-1"></i> Sepete Ekle</a>
-                        <a href="" class="btn btn-light"><i class="fa-regular fa-heart me-1"></i> Listeye Ekle</a>
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="me-1 d-inline">
+                            <input type="hidden" name="urunId" value="@Model.Id">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fa fa-shopping-basket "></i>Sepete Ekle
+                            </button>
+                        </form>
+                        <a href="" class="btn btn-light">
+                            <i class="fa-regular fa-heart me-1"></i>Listeye Ekle
+                        </a>
                     </div>
                 </article>
             </div>
