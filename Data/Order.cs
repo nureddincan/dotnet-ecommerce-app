@@ -13,6 +13,19 @@ public class Order
     public double TotalPrice { get; set; }
     public string? OrderNote { get; set; }
     public List<OrderItem> OrderItems { get; set; } = new();
+
+      public double AraToplam()
+    {
+        return OrderItems.Sum(item => item.Urun.Fiyat * item.Count);
+    }
+    public double ToplamVergi()
+    {
+        return AraToplam() * 0.2;
+    }
+    public double Toplam()
+    {
+        return ToplamVergi() + AraToplam();
+    }
 }
 
 public class OrderItem

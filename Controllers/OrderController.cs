@@ -2,6 +2,7 @@ using dotnet_store.Models;
 using dotnet_store.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_store.Controllers;
 
@@ -15,6 +16,23 @@ public class OrderController : Controller
     {
         _cartService = cartService;
         _context = context;
+    }
+
+    [Authorize(Roles = "Admin")]
+    public ActionResult Index()
+    {
+        return View(_context.Orders.ToList());
+    }
+
+    [Authorize(Roles = "Admin")]
+    public ActionResult Details(int id)
+    {
+        var order = _context.Orders
+                    .Include(order => order.OrderItems)
+                    .ThenInclude(orderItem => orderItem.Urun)
+                    .FirstOrDefault(order => order.Id == id);
+
+        return View(order);
     }
 
     [HttpGet]
