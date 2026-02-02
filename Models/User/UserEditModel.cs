@@ -24,4 +24,3 @@ public class UserEditModel
 
     public IList<string>? SelectedRoles { get; set; }
 }
-

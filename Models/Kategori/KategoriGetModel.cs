@@ -1,6 +1,5 @@
 namespace dotnet_store.Models;
 
-// Veri taşıyorsam model ismini veriyorum.
 public class KategoriGetModel
 {
     public int Id { get; set; }

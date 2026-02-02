@@ -4,8 +4,6 @@ using dotnet_store.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace dotnet_store.Controllers;
 
 public class AccountController : Controller

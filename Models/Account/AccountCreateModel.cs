@@ -6,7 +6,6 @@ public class AccountCreateModel
 {
     [Display(Name = "Ad Soyad")]
     [Required(ErrorMessage = "{0} zorunludur.")]
-    // [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Sadece sayı ve harf giriniz.")]
     public string AdSoyad { get; set; } = null!;
 
     [Display(Name = "E-Posta")]

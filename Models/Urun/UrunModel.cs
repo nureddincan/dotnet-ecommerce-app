@@ -32,4 +32,3 @@ public class UrunModel
     [Required(ErrorMessage = "{0} zorunludur.")]
     public int? KategoriId { get; set; }
 }
-

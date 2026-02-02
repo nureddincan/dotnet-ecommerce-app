@@ -37,7 +37,6 @@ public class CartService : ICartService
 
     public async Task<Cart> GetCartAsync(string custId)
     {
-        // 2.Seviye Nagivation Property
         var cart = await _context.Carts
                     .Include(cart => cart.CartItems)
                     .ThenInclude(cartItem => cartItem.Urun)
@@ -72,7 +71,6 @@ public class CartService : ICartService
         var context = _httpContextAccessor.HttpContext;
         return context?.User.Identity?.Name ?? context?.Request.Cookies["customerId"]!;
     }
-
     public async Task RemoveItemAsync(int urunId, int miktar = 1)
     {
         var cart = await GetCartAsync(GetCustomerId());
@@ -84,7 +82,6 @@ public class CartService : ICartService
             await _context.SaveChangesAsync();
         }
     }
-
     public async Task TransferCookieCartToUser(string username)
     {
         var userCart = await GetCartAsync(username);

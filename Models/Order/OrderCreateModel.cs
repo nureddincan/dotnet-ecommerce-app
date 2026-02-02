@@ -35,4 +35,17 @@ public class OrderCreateModel
     public string? OrderNote { get; set; }
     public List<OrderItem> OrderItems { get; set; } = new();
 
+    [Display(Name = "Kart Sahibinin Adı")]
+    public string CartName { get; set; } = null!;
+
+    [Display(Name = "Kart Numarası")]
+    public string CartNumber { get; set; } = null!;
+
+    [Display(Name = "Son Kullanma Tarihi")]
+    public string CartExpirationYear { get; set; } = null!;
+
+    public string CartExpirationMonth { get; set; } = null!;
+
+    [Display(Name = "Kart CVV")]
+    public string CartCVV { get; set; } = null!;
 }
