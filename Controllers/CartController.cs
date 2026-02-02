@@ -1,11 +1,9 @@
 using dotnet_store.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_store.Controllers;
 
-[Authorize]
 public class CartController : Controller
 {
     private readonly DataContext _context;
@@ -34,7 +32,6 @@ public class CartController : Controller
         {
             addedItem.Miktar += miktar;
         }
-        // İlk defa ekleniyorsa
         else
         {
             cart.CartItems.Add(new CartItem
@@ -67,7 +64,8 @@ public class CartController : Controller
 
     private async Task<Cart> GetCartAsync()
     {
-        var customerId = User.Identity?.Name;
+        var customerId = User.Identity?.Name ?? Request.Cookies["customerId"];
+
         // 2.Seviye Nagivation Property
         var cart = await _context.Carts
                     .Include(cart => cart.CartItems)
@@ -77,9 +75,24 @@ public class CartController : Controller
 
         if (cart == null)
         {
-            cart = new Cart { CustomerId = customerId! };
-            _context.Carts.Add(cart);           // change tracking
-            await _context.SaveChangesAsync();  // 
+            customerId = User.Identity?.Name;
+
+            if (string.IsNullOrEmpty(customerId))
+            {
+                customerId = Guid.NewGuid().ToString();
+
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMonths(1),
+                    IsEssential = true,
+                };
+
+                Response.Cookies.Append("customerId", customerId, cookieOptions);
+            }
+
+            cart = new Cart { CustomerId = customerId };
+            _context.Carts.Add(cart);
+            // await _context.SaveChangesAsync();
         }
 
         return cart;
