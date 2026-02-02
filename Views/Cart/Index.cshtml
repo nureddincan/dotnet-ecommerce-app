@@ -43,16 +43,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <input type="number" value="@cartItem.Miktar" class="form-control fw-bold text-primary"
-                                            min="1">
+                                    <div class="col-2 d-flex align-items-center">
+                                        <form method="post" asp-controller="Cart" asp-action="RemoveItem">
+                                            <input type="hidden" name="urunId" value="@cartItem.UrunId">
+                                            <input type="hidden" name="miktar" value="1">
+                                            <button type="submit" class="btn btn-sm">
+                                                <i class="fa-solid fa-minus fluid"></i>
+                                            </button>
+                                        </form>
+                                        <span class="fw-bold text-primary">@cartItem.Miktar</span>
+                                        <form method="post" asp-controller="Cart" asp-action="AddtoCart">
+                                            <input type="hidden" name="urunId" value="@cartItem.UrunId">
+                                            <input type="hidden" name="miktar" value="1">
+                                            <button type=" submit" class="btn btn-sm">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                     <div class="col-2 text-center text-primary">
                                         <span class="fw-bold">@(cartItem.Urun.Fiyat* cartItem.Miktar) TL</span>
                                     </div>
                                     <div class="col-1">
-                                        <form asp-controller="Cart" asp-action="RemoveItem" method="post">
-                                            <input type="hidden" name="cartItemId" value="@cartItem.Id">
+                                        <form method="post" asp-controller="Cart" asp-action="RemoveItem">
+                                            <input type="hidden" name="urunId" value="@cartItem.UrunId">
+                                            <input type="hidden" name="miktar" value="@cartItem.Miktar">
                                             <button type="submit" class="btn btn-sm d-flex align-items-center">
                                                 <i class="fa-solid fa-trash-can "></i>
                                                 <span>Sil</span>

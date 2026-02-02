@@ -25,39 +25,29 @@ public class CartController : Controller
     {
         var cart = await GetCartAsync();
 
-        var addedItem = cart.CartItems.Where(i => i.UrunId == urunId).FirstOrDefault();
+        var urun = await _context.Urunler.FirstOrDefaultAsync(urun => urun.Id == urunId);
 
-        // Ürün daha önce eklendiyse
-        if (addedItem != null)
+        if (urun != null)
         {
-            addedItem.Miktar += miktar;
+            cart.AddItem(urun, miktar);
         }
-        else
-        {
-            cart.CartItems.Add(new CartItem
-            {
-                UrunId = urunId,
-                Miktar = miktar,
-            });
-        }
-
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index", "Cart");
     }
 
     [HttpPost]
-    public async Task<ActionResult> RemoveItem(int cartItemId)
+    public async Task<ActionResult> RemoveItem(int urunId, int miktar)
     {
         var cart = await GetCartAsync();
 
-        var item = cart.CartItems.FirstOrDefault(i => i.Id == cartItemId);
-
-        if (item != null)
+        var urun = await _context.Urunler.FirstOrDefaultAsync(urun => urun.Id == urunId);
+        if (urun != null)
         {
-            cart.CartItems.Remove(item);
+            cart.DeleteItem(urunId, miktar);
             await _context.SaveChangesAsync();
         }
+
 
         return RedirectToAction("Index", "Cart");
     }

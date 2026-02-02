@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.Features;
+
 namespace dotnet_store.Models;
 
 public class Cart
@@ -6,11 +8,40 @@ public class Cart
     public string CustomerId { get; set; } = null!;
     public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
+    public void AddItem(Urun urun, int miktar)
+    {
+        var addedItem = CartItems.FirstOrDefault(cartItem => cartItem.UrunId == urun.Id);
+
+        // Ürün daha önce eklenmediyse
+        if (addedItem == null)
+        {
+            CartItems.Add(new CartItem { Urun = urun, Miktar = miktar });
+        }
+        else
+        {
+            addedItem.Miktar += miktar;
+        }
+    }
+
+    public void DeleteItem(int urunId, int miktar)
+    {
+        var addedItem = CartItems.FirstOrDefault(cartItem => cartItem.UrunId == urunId);
+
+        if (addedItem != null)
+        {
+            addedItem.Miktar -= miktar;
+
+            if (addedItem.Miktar == 0)
+            {
+                CartItems.Remove(addedItem);
+            }
+        }
+    }
+
     public double AraToplam()
     {
         return CartItems.Sum(item => item.Urun.Fiyat * item.Miktar);
     }
-
     public double ToplamVergi()
     {
         return AraToplam() * 0.2;
