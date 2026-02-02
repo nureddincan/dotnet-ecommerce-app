@@ -22,38 +22,46 @@
                         <h2 class="h6 mb-0">Sipariş Detayı</h2>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label asp-for="AdSoyad" class="form-label"></label>
-                                <input asp-for="AdSoyad" class="form-control">
+                        <form asp-controller="Order" asp-action="Checkout" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label asp-for="AdSoyad" class="form-label"></label>
+                                    <input asp-for="AdSoyad" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label asp-for="City" class="form-label"></label>
-                                <input asp-for="City" class="form-control">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label asp-for="City" class="form-label"></label>
+                                    <input asp-for="City" class="form-control">
+                                </div>
+                                <div class="col">
+                                    <label asp-for="PostCode" class="form-label"></label>
+                                    <input asp-for="PostCode" class="form-control">
+                                </div>
+                                <div class="col">
+                                    <label asp-for="TelNo" class="form-label"></label>
+                                    <input asp-for="TelNo" class="form-control">
+                                </div>
                             </div>
-                            <div class="col">
-                                <label asp-for="PostCode" class="form-label"></label>
-                                <input asp-for="PostCode" class="form-control">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label asp-for="Address" class="form-label"></label>
+                                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                                </div>
                             </div>
-                            <div class="col">
-                                <label asp-for="TelNo" class="form-label"></label>
-                                <input asp-for="TelNo" class="form-control">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label asp-for="OrderNote" class="form-label"></label>
+                                    <textarea asp-for="OrderNote" class="form-control" rows="3"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label asp-for="Address" class="form-label"></label>
-                                <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                            <div class="d-grid mt-3">
+                                <button type="submit" asp-controller="Order" asp-action="Checkout"
+                                    class="btn btn-primary btn-lg">Ödeme
+                                    Yap</button>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label asp-for="OrderNote" class="form-label"></label>
-                                <textarea asp-for="OrderNote" class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -82,10 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-grid mt-3">
-                    <a asp-controller="Order" asp-action="Checkout" class="btn btn-primary btn-lg">Ödeme
-                        Yap</a>
-                </div>
+
             </div>
         </div>
     </div>
