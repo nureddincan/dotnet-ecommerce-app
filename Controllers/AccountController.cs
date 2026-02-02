@@ -3,6 +3,7 @@ using dotnet_store.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_store.Controllers;
 
@@ -11,11 +12,14 @@ public class AccountController : Controller
     private UserManager<AppUser> _userManager;
     private SignInManager<AppUser> _signInManager;
     private IEmailService _emailService;
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService)
+    private readonly DataContext _context;
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, DataContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _emailService = emailService;
+        _context = context;
+
     }
 
     [HttpGet]
@@ -69,6 +73,8 @@ public class AccountController : Controller
                     await _userManager.ResetAccessFailedCountAsync(user);
                     await _userManager.SetLockoutEndDateAsync(user, null);
 
+                    await TransferCartToUserAsync(user);
+
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -93,6 +99,39 @@ public class AccountController : Controller
             }
         }
         return View(model);
+    }
+
+    private async Task TransferCartToUserAsync(AppUser user)
+    {
+        var userCart = await _context.Carts
+                   .Include(cart => cart.CartItems)
+                   .ThenInclude(cartItem => cartItem.Urun)
+                   .Where(cart => cart.CustomerId == user.UserName)
+                   .FirstOrDefaultAsync();
+
+        var cookieCart = await _context.Carts
+       .Include(cart => cart.CartItems)
+       .ThenInclude(cartItem => cartItem.Urun)
+       .Where(cart => cart.CustomerId == Request.Cookies["customerId"])
+       .FirstOrDefaultAsync();
+
+        foreach (var item in cookieCart?.CartItems!)
+        {
+            var addedItem = userCart?.CartItems.Where(i => i.UrunId == item.UrunId).FirstOrDefault();
+
+            // Ürün daha önce eklendiyse
+            if (addedItem != null)
+            {
+                addedItem.Miktar += item.Miktar;
+            }
+            else
+            {
+                userCart?.CartItems.Add(new CartItem { UrunId = item.UrunId, Miktar = item.Miktar });
+            }
+        }
+        _context.Carts.Remove(cookieCart);
+
+        await _context.SaveChangesAsync();
     }
 
     [Authorize]
