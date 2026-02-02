@@ -16,7 +16,7 @@ public class Order
 
       public double AraToplam()
     {
-        return OrderItems.Sum(item => item.Urun.Fiyat * item.Count);
+        return OrderItems.Sum(item => item.Price * item.Count);
     }
     public double ToplamVergi()
     {

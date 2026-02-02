@@ -89,4 +89,15 @@ public class OrderController : Controller
     {
         return View("Completed", orderId);
     }
+
+    public async Task<ActionResult> OrderList()
+    {
+        var customerId = User.Identity?.Name!;
+        var orders = await _context.Orders
+                    .Include(order => order.OrderItems)
+                    .ThenInclude(orderItem => orderItem.Urun)
+                    .Where(order => order.CustomerId == customerId)
+                    .ToListAsync();
+        return View(orders);
+    }
 }
