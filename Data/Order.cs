@@ -4,13 +4,14 @@ public class Order
 {
     public int Id { get; set; }
     public DateTime OrderDate { get; set; }
-    public string Username { get; set; } = null!;
+    public string AdSoyad { get; set; } = null!;
+    public string CustomerId { get; set; } = null!;
     public string City { get; set; } = null!;
     public string AddressRow { get; set; } = null!;
     public string PostCode { get; set; } = null!;
     public string TelNo { get; set; } = null!;
-    public string Email { get; set; } = null!;
     public double TotalPrice { get; set; }
+    public string? OrderNote { get; set; }
     public List<OrderItem> OrderItems { get; set; } = new();
 }
 
