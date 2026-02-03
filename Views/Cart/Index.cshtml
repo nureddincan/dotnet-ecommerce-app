@@ -40,8 +40,18 @@
                                                     class="text-decoration-none text-black">
                                                     <h6 class="mb-0">@cartItem.Urun.Ad</h6>
                                                 </a>
+                                                <form method="post" asp-controller="Cart" asp-action="RemoveItem" class="mt-4">
+                                                    <input type="hidden" name="urunId" value="@cartItem.UrunId">
+                                                    <input type="hidden" name="miktar" value="@cartItem.Miktar">
+                                                    <button type="submit" class="btn btn-sm d-flex align-items-center">
+                                                        <i class="fa-solid fa-trash-can "></i>
+                                                        <span>Sil</span>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
+
+
                                     </div>
                                     <div class="col-2 d-flex align-items-center">
                                         <form method="post" asp-controller="Cart" asp-action="RemoveItem">
@@ -63,19 +73,8 @@
                                     <div class="col-2 text-center text-primary">
                                         <span class="fw-bold">@(cartItem.Urun.Fiyat* cartItem.Miktar) TL</span>
                                     </div>
-                                    <div class="col-1">
-                                        <form method="post" asp-controller="Cart" asp-action="RemoveItem">
-                                            <input type="hidden" name="urunId" value="@cartItem.UrunId">
-                                            <input type="hidden" name="miktar" value="@cartItem.Miktar">
-                                            <button type="submit" class="btn btn-sm d-flex align-items-center">
-                                                <i class="fa-solid fa-trash-can "></i>
-                                                <span>Sil</span>
-                                            </button>
-                                        </form>
-                                    </div>
                                 </div>
                             </li>
-
                         }
                     </ul>
                 </div>

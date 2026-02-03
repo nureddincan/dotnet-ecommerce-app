@@ -1,3 +1,19 @@
+html,
+body {
+  height: 100%; /* Sayfanın temelini %100'e sabitler */
+  margin: 0;
+}
+
+body {
+  display: flex; /* Body'yi flex konteyner yapar */
+  flex-direction: column; /* Body içeriğini dikey olarak düzenler */
+  min-height: 100vh; /* Body'yi en az ekran kadar yapar */
+}
+
+main {
+  flex-grow: 1; /* Orta kısım (main) üstteki boşluğu doldurur ve footer'ı dibe iter */
+}
+
 :root {
   --primary: #1351d8;
 }
@@ -100,7 +116,10 @@
 }
 
 .gallery-wrap .img-big-wrap img {
+  height: 100%;
+  width: auto;
   max-width: 100%;
+  object-fit: cover;
 }
 
 .gallery-wrap .thumbs-wrap {
