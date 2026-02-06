@@ -4,13 +4,13 @@ Bu proje, Udemy - Sadık Turan rehberliğindeki "Komple Uygulamalı Web Gelişti
 
 # 📝 Proje Hakkında
 
-Bu uygulama, bir E-Ticaret sitesinin sahip olması gereken temel kullanıcı süreçlerini ve kapsamlı bir yönetici (Admin) panelini içermektedir. Proje, sadece bir arayüz çalışması değil; ödeme sistemlerinden mail servislerine, veritabanı yönetiminden yayına alma (deployment) süreçlerine kadar uçtan uca bir deneyimi temsil etmektedir.
+Bu uygulama, bir E-Ticaret sitesinin sahip olması gereken temel kullanıcı süreçlerini ve kapsamlı bir yönetici (Admin) panelini içermektedir. Proje, sadece bir arayüz çalışması değil; ödeme sistemlerinden mail servislerine, veritabanı yönetiminden yayına alma süreçlerine kadar uçtan uca bir deneyimi temsil etmektedir.
 
 # 🛠️ Kullanılan Teknolojiler
 
 **Backend:** ASP.NET Core 9 MVC
 
-**Database:** MS SQL Server & Entity Framework Core
+**Database:** MS SQL Server & Entity Framework Core(Code First)
 
 **Frontend:** HTML5, CSS3, Bootstrap 5
 
@@ -21,18 +21,19 @@ Bu uygulama, bir E-Ticaret sitesinin sahip olması gereken temel kullanıcı sü
 - **İyzico API:** Güvenli ödeme sistemleri entegrasyonu.
 - **Gmail Service:** Şifre değiştirme süreçleri için SMTP mail entegrasyonu.
 
-**Deployment:** Hosting.com.tr üzerinden canlıya alınmıştır.
+**Deployment:** Hosting.com.tr üzerinden canlıya alınmıştır. [Canlı Demo](nureddincan.com.tr)
 
 # ✨ Öne Çıkan Özellikler
 
 **Kullanıcı Tarafı**
+- Tüm cihazlarda (mobil, tablet, desktop) uyumlu arayüz.
 - Üyelik sistemi ve kullanıcı profili ve yönetimi.
 - Ürün listeleme, filtreleme ve detaylı inceleme.
 - Sepet yönetimi ve dinamik alışveriş deneyimi.
 - İyzico entegrasyonu ile güvenli ödeme adımları.
 
 **Yönetim (Admin) Paneli**
-- Full CRUD: Kategori, ürün, slider, rol ve kullanıcı yönetimi işlemleri.
+- CRUD: Kategori, ürün, slider, rol ve kullanıcı yönetimi işlemleri.
 - Sipariş Yönetimi: Gelen siparişleri takip etme, detay.
 
 # 🏗️ Mimari Yapı (Key Concepts)
@@ -59,6 +60,7 @@ Projeyi yerel bilgisayarınızda çalıştırmak isterseniz:
 ```bash
     dotnet ef database update
 ```
+
 4. Projeyi çalıştırın:
 ```bash
     dotnet run
