@@ -59,7 +59,7 @@ Projeyi yerel bilgisayarınızda çalıştırmak isterseniz:
 
 2. **appsettings.Development.json** dosyasındaki ConnectionStrings bölümünü kendi SQL Server bilgilerinize göre güncelleyin.
 
-3. Terminale üzerinden veritabanını oluşturun:
+3. Terminal üzerinden veritabanını oluşturun:
 ```bash
     dotnet ef database update
 ```
@@ -67,3 +67,7 @@ Projeyi yerel bilgisayarınızda çalıştırmak isterseniz:
 ```bash
     dotnet run
 ```
+
+# Ekran Görüntüleri
+
+<img width="1671" height="843" alt="Account-Login" src="https://github.com/user-attachments/assets/7fa0b93d-908b-4936-b0f8-e44cb187d0e6" />
